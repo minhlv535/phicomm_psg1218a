@@ -9,10 +9,14 @@
 # File name: diy-part2.sh
 # Description: OpenWrt DIY script part 2 (After Update feeds)
 #
+sed -i '/option disabled/d' /etc/config/wireless
+sed -i 's/OpenWrt/Wi-Fi@/g' /etc/config/wireless
 
-# Modify default IP
-sed -i 's/192.168.1.1/172.16.1.1/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/172.16.1.1/g' /etc/config/network
 
-sed -i 's/OpenWrt/RouterOS/g' ./package/base-files/files/bin/config_generate
+sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+echo "DISTRIB_REVISION='OS'" >> /etc/openwrt_release
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='Router '" >> /etc/openwrt_release
 
 sed -i 's@.*CYXluq4wUazHjmCDBCqXF*@#&@g' ./package/lean/default-settings/files/zzz-default-settings

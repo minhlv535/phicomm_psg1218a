@@ -9,6 +9,16 @@
 # File name: diy-part2.sh
 # Description: OpenWrt DIY script part 2 (After Update feeds)
 #
+
+ cat >> .config <<EOF
+ 
+  CONFIG_PACKAGE_luci-app-unblockmusic is not set
+  CONFIG_UnblockNeteaseMusic_Go is not set
+  CONFIG_UnblockNeteaseMusic_NodeJS is not set
+  CONFIG_PACKAGE_luci-i18n-turboacc is not set
+ 
+ EOF
+
 sed -i '/option disabled/d' /etc/config/wireless
 sed -i 's/OpenWrt/Wi-Fi@/g' /etc/config/wireless
 

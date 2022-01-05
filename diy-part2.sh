@@ -10,14 +10,43 @@
 # Description: OpenWrt DIY script part 2 (After Update feeds)
 #
 
+cat >> .config <<EOF
+	set luci.main.lang=auto
+	commit luci
+EOF
+
+cat >> .config <<EOF
+	del system.ntp
+ set system.ntp=timeserver
+        add_list system.ntp.server='0.asia.pool.ntp.org'
+        add_list system.ntp.server='1.time.windows.com'
+	set system.ntp.enabled=1
+	set system.ntp.enable_server=1
+commit system
+  set luci.main.lang=auto
+	set system.@system[0]=system
+	set system.@system[0].zonename='Asia/Ho Chi Minh'
+	set system.@system[0].timezone=ICT-7
+	delete network.loopback
+	set network.loopback='interface'
+	set network.loopback.ifname='lo'
+	set network.loopback.proto='static'
+	set network.loopback.ipaddr='127.0.0.1'
+	set network.loopback.netmask='255.0.0.0'
+	/etc/init.d/sysntpd start >/dev/null
+	set luci.diag.dns="google.com.vn"
+	set luci.diag.ping="google.com.vn"
+	set luci.diag.route="google.com.vn"
+EOF
+
  cat >> .config <<EOF
  
-  CONFIG_PACKAGE_luci-app-unblockmusic is not set
-  CONFIG_UnblockNeteaseMusic_Go is not set
-  CONFIG_UnblockNeteaseMusic_NodeJS is not set
-  CONFIG_PACKAGE_luci-i18n-turboacc is not set
+CONFIG_PACKAGE_luci-app-unblockmusic is not set
+CONFIG_UnblockNeteaseMusic_Go is not set
+CONFIG_UnblockNeteaseMusic_NodeJS is not set
+CONFIG_PACKAGE_luci-i18n-turboacc is not set
  
- EOF
+EOF
 
 sed -i '/option disabled/d' /etc/config/wireless
 sed -i 's/OpenWrt/Wi-Fi@/g' /etc/config/wireless
